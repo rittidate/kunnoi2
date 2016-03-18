@@ -1,0 +1,14 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title Sbobet
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=0", :name => "viewport"}/
+    %meta{:content => "yes", :name => "apple-mobile-web-app-capable"}/
+    %meta{:content => "black-translucent", :name => "apple-mobile-web-app-status-bar-style"}/
+    %link{:href => "http://fonts.googleapis.com/css?family=Kanit", :rel => "stylesheet" }
+    %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"}
+    = $this->minify->deploy_css()
+    = $this->minify->deploy_js()
+  %body
+    %h1 Hello, world!
