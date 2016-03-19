@@ -22,6 +22,17 @@ class Migration_Install_ion_auth extends CI_Migration {
 			'description' => array(
 				'type' => 'VARCHAR',
 				'constraint' => '100',
+			),
+			'created_on' => array(
+				'type' => 'INT',
+				'constraint' => '11',
+				'unsigned' => TRUE,
+			),
+			'active' => array(
+				'type' => 'TINYINT',
+				'constraint' => '1',
+				'unsigned' => TRUE,
+				'null' => TRUE
 			)
 		));
 		$this->dbforge->add_key('id', TRUE);
@@ -32,12 +43,14 @@ class Migration_Install_ion_auth extends CI_Migration {
 			array(
 				'id' => '1',
 				'name' => 'admin',
-				'description' => 'Administrator'
+				'description' => 'Administrator',
+				'created_on' => time()
 			),
 			array(
 				'id' => '2',
 				'name' => 'members',
-				'description' => 'General User'
+				'description' => 'General User',
+				'created_on' => time()
 			)
 		);
 		$this->db->insert_batch('groups', $data);
@@ -131,7 +144,12 @@ class Migration_Install_ion_auth extends CI_Migration {
 				'type' => 'VARCHAR',
 				'constraint' => '20',
 				'null' => TRUE
-			)
+			),
+			'group_id' => array(
+				'type' => 'MEDIUMINT',
+				'constraint' => '8',
+				'unsigned' => TRUE			
+			),
 
 		));
 		$this->dbforge->add_key('id', TRUE);
@@ -142,7 +160,7 @@ class Migration_Install_ion_auth extends CI_Migration {
 			'id' => '1',
 			'ip_address' => '127.0.0.1',
 			'username' => 'administrator',
-			'password' => '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36',
+			'password' => '$2a$07$SeB4f9a5c45477f9f42b05f2d50c9668d',
 			'salt' => '',
 			'email' => 'admin@admin.com',
 			'activation_code' => '',
@@ -156,48 +174,6 @@ class Migration_Install_ion_auth extends CI_Migration {
 			'phone' => '0',
 		);
 		$this->db->insert('users', $data);
-
-
-		// Drop table 'users_groups' if it exists
-		$this->dbforge->drop_table('users_groups', TRUE);
-
-		// Table structure for table 'users_groups'
-		$this->dbforge->add_field(array(
-			'id' => array(
-				'type' => 'MEDIUMINT',
-				'constraint' => '8',
-				'unsigned' => TRUE,
-				'auto_increment' => TRUE
-			),
-			'user_id' => array(
-				'type' => 'MEDIUMINT',
-				'constraint' => '8',
-				'unsigned' => TRUE
-			),
-			'group_id' => array(
-				'type' => 'MEDIUMINT',
-				'constraint' => '8',
-				'unsigned' => TRUE
-			)
-		));
-		$this->dbforge->add_key('id', TRUE);
-		$this->dbforge->create_table('users_groups');
-
-		// Dumping data for table 'users_groups'
-		$data = array(
-			array(
-				'id' => '1',
-				'user_id' => '1',
-				'group_id' => '1',
-			),
-			array(
-				'id' => '2',
-				'user_id' => '1',
-				'group_id' => '2',
-			)
-		);
-		$this->db->insert_batch('users_groups', $data);
-
 
 		// Drop table 'login_attempts' if it exists
 		$this->dbforge->drop_table('login_attempts', TRUE);

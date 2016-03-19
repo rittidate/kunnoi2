@@ -39,8 +39,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://kitv7.local';
-//$config['base_url']	= 'http://trail.kittivate.com/';
+$config['base_url']	= 'http://kunnoi2.local';
 
 /*
 |--------------------------------------------------------------------------
