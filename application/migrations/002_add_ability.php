@@ -15,7 +15,7 @@ class Migration_Add_ability extends CI_Migration {
       ),
       'manage' => array(
         'type' => 'TINYINT',
-        'constraint' => '0',
+        'constraint' => '1',
         'unsigned' => TRUE,
         'null' => TRUE
       ),
@@ -23,12 +23,14 @@ class Migration_Add_ability extends CI_Migration {
         'type' => 'TINYINT',
         'constraint' => '1',
         'unsigned' => TRUE,
+        'DEFAULT' => '1',
         'null' => TRUE
       ),
       'delete' => array(
         'type' => 'TINYINT',
-        'constraint' => '0',
+        'constraint' => '1',
         'unsigned' => TRUE,
+        'DEFAULT' => '0',
         'null' => TRUE
       ),
       'group_id' => array(
