@@ -1,14 +1,23 @@
-!!!
-%html{:lang => "en"}
-  %head
-    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
-    %title Sbobet
-    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=0", :name => "viewport"}/
-    %meta{:content => "yes", :name => "apple-mobile-web-app-capable"}/
-    %meta{:content => "black-translucent", :name => "apple-mobile-web-app-status-bar-style"}/
-    %link{:href => "http://fonts.googleapis.com/css?family=Kanit", :rel => "stylesheet" }
-    %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"}
-    = $this->minify->deploy_css()
-    = $this->minify->deploy_js()
-  %body
-    %h1 Hello, world!
+.container-fluid
+  .row
+    #area{:class => 'col-sm-9 col-md-9'}
+      .panel{:class => 'panel-default'}
+        .panel-body
+          - for ($i=1; $i < 60;):
+            .col-md-2
+              %button{:class => 'btn table-area'} =$i
+            - $i++
+          - endfor
+    #grid{:class => 'col-sm-3 col-md-3'}
+      #jsGrid
+      .row
+        .col-md-6
+          %button{:class => 'btn btn-default'} aaa
+        .col-md-6
+          %button{:class => 'btn btn-default'} bbb
+      .row
+        .col-md-6
+          %button{:class => 'btn btn-default'} ccc
+        .col-md-6
+          %button{:class => 'btn btn-default'} ddd
+= js_asset('grid.js')

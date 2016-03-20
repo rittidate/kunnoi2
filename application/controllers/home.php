@@ -27,13 +27,20 @@
 
 class Home extends CI_Controller {
 
+  function __construct()
+  {
+    parent::__construct();
+    $this->load->library('ion_auth');
+    $this->load->library('session');
+    $this->load->library('form_validation');
+    $this->load->database();
+    $this->load->helper('url');
+  }
+
 	public function index()
 	{
-    $this->minify->css(array('bootstrap' => 'bootstrap.min.css', 'app.css'));
-    $this->minify->js(array('bootstrap' => 'bootstrap.min.js'));
-		$this->load->view('home');
-    //var_dump($this->router->fetch_class());
-    //var_dump($this->router->fetch_method());
+    $this->load->library('Layouts');
+    $this->layouts->view('home', array(), 'grid');
 	}
 }
 

@@ -67,6 +67,18 @@ class Migration_Add_ability extends CI_Migration {
     ));
     $this->dbforge->add_key('id', TRUE);
     $this->dbforge->create_table('pages');
+
+    $data = array(
+      array(
+        'id' => '1',
+        'name' => 'home'
+      ),
+      array(
+        'id' => '2',
+        'name' => 'user'
+      )
+    );
+    $this->db->insert_batch('pages', $data);
   }
   
   public function down()

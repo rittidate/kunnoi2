@@ -1,0 +1,19 @@
+.container{:id => 'signin'}
+  - if ($message != ''):
+    .alert{:class => 'alert-warning alert-dismissible', :role => 'alert'}
+      %button{:type => 'button', :class => 'close', :data-dismiss => 'alert', :aria-label => 'Close'}
+        %span{:aria-hidden => 'true'} 
+          X
+      %strong #{$message}
+  - endif
+  = form_open('user/login', $form)
+    %h2{:class => 'form-signin-heading'} Please sign in
+    %label{:for => 'inputEmail', :class => 'sr-only'} Email address
+    = form_input($email)
+    %label{:for => 'inputPassword', :class => 'sr-only'} Password
+    = form_input($password)
+    .checkbox
+      %label
+        = form_checkbox('remember', '1', FALSE)
+        Remember me
+    = form_submit('submit', 'Sign in', "class = 'btn btn-lg btn-primary btn-block'");
