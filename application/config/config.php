@@ -40,7 +40,7 @@
 |
 */
 $config['base_url']	= 'http://kunnoi2.local/';
-
+//$config['base_url'] = 'http://kunnoi2.kittivate.com/';
 /*
 |--------------------------------------------------------------------------
 | Index File

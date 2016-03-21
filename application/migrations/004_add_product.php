@@ -148,9 +148,9 @@ class Migration_Add_product extends CI_Migration {
       ),
       'unit_ratio' => array(
         'type' => 'MEDIUMINT',
-        'constraint' => '8',
+        'constraint' => '11',
         'unsigned' => TRUE,
-        'DEFAULT' => '1',
+        'DEFAULT' => '100',
         'null' => FALSE
       ),
       'created_on' => array(

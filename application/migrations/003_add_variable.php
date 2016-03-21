@@ -677,7 +677,7 @@ class Migration_Add_variable extends CI_Migration {
         'value1' => '50',
         'created_on' => time(),
         'updated_on' => time()
-      )
+      ),
       array(
         'type' => 'table_area',
         'e_abb_name' => 'B',

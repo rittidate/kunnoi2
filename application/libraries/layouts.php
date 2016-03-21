@@ -16,6 +16,8 @@ class Layouts {
   private $title_separator = ' | '; 
 
   private $file_includes = array();
+
+  private $layout_componet = array();
     
   public function __construct()  
   { 
@@ -40,13 +42,28 @@ class Layouts {
       
     // Load the view's content, with the params passed 
     $view_content = $this->CI->load->view($view_name, $params, TRUE); 
-  
+    
+    $this->layout_componet['title_for_layout'] = $separated_title_for_layout;
+    $this->layout_componet['content_for_layout'] = $view_content;
+
     // Now load the layout, and pass the view we just rendered 
-    $this->CI->load->view('layouts/' . $layout, array( 
-      'content_for_layout' => $view_content, 
-      'title_for_layout' => $separated_title_for_layout
-    )); 
-  } 
+    $this->CI->load->view('layouts/' . $layout, $this->layout_componet); 
+  }
+
+  public function add_layout_component($view_name, $params = array())
+  {
+      $pattern = "/\_(.*)$/";
+      
+      $view_content = $this->CI->load->view($view_name, $params, TRUE);
+
+      $success = preg_match($pattern, $view_name, $match);
+
+      if($success){
+        $param_name = $match[1];
+        $this->layout_componet[$param_name] = $view_content;
+      }
+      
+  }
     
   public function add_include($path, $prepend_base_url = TRUE) 
   { 

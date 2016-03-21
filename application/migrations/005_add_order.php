@@ -139,43 +139,64 @@ class Migration_Add_order extends CI_Migration {
         'unsigned' => TRUE,
         'auto_increment' => TRUE
       ),
+      'date' => array(
+        'type' => 'DATE',
+        'null' => FALSE
+      ),
+      'order_id' => array(
+        'type' => 'MEDIUMINT',
+        'constraint' => '8',
+        'unsigned' => TRUE,
+        'null' => FALSE
+      ),
+      'item_no' => array(
+        'type' => 'INT',
+        'constraint' => '8',
+        'unsigned' => TRUE,
+        'null' => FALSE
+      ),
+      // s
+      'type' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '1',
+        'null' => FALSE
+      ),
+      // n, c
+      'status' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '1',
+        'null' => FALSE
+      ),
       'mp_id' => array(
         'type' => 'MEDIUMINT',
         'constraint' => '8',
         'unsigned' => TRUE,
         'null' => FALSE
       ),
-      'barcode' => array(
-        'type' => 'VARCHAR',
-        'constraint' => '20',
+      'bc_id' => array(
+        'type' => 'MEDIUMINT',
+        'constraint' => '8',
+        'unsigned' => TRUE,
         'null' => FALSE
       ),
-      'price1' => array(
+      'vatable' => array(
+        'type' => 'TINYINT',
+        'constraint' => '1',
+        'unsigned' => TRUE,
+        'DEFAULT' => '1',
+        'null' => FALSE
+      ),
+      'price_no' => array(
+        'type' => 'INT',
+        'constraint' => '4',
+        'unsigned' => TRUE,
+        'DEFAULT' => '1',
+        'null' => FALSE
+      ),
+      'price' => array(
         'type' => 'INT',
         'constraint' => '15',
         'unsigned' => TRUE,
-        'DEFAULT' => '0',
-        'null' => FALSE
-      ),
-      'price2' => array(
-        'type' => 'INT',
-        'constraint' => '15',
-        'unsigned' => TRUE,
-        'DEFAULT' => '0',
-        'null' => FALSE
-      ),
-      'price3' => array(
-        'type' => 'INT',
-        'constraint' => '15',
-        'unsigned' => TRUE,
-        'DEFAULT' => '0',
-        'null' => FALSE
-      ),
-      'price4' => array(
-        'type' => 'INT',
-        'constraint' => '15',
-        'unsigned' => TRUE,
-        'DEFAULT' => '0',
         'null' => FALSE
       ),
       'unit_id' => array(
@@ -185,10 +206,36 @@ class Migration_Add_order extends CI_Migration {
         'null' => FALSE
       ),
       'unit_ratio' => array(
-        'type' => 'MEDIUMINT',
-        'constraint' => '8',
+        'type' => 'INT',
+        'constraint' => '11',
         'unsigned' => TRUE,
-        'DEFAULT' => '1',
+        'DEFAULT' => '100',
+        'null' => FALSE
+      ),
+      'qty' => array(
+        'type' => 'INT',
+        'constraint' => '11',
+        'unsigned' => TRUE,
+        'DEFAULT' => '100',
+        'null' => FALSE
+      ),
+      'discount_amount' => array(
+        'type' => 'INT',
+        'constraint' => '15',
+        'unsigned' => TRUE,
+        'DEFAULT' => '0',
+        'null' => FALSE
+      ),
+      'total' => array(
+        'type' => 'INT',
+        'constraint' => '15',
+        'unsigned' => TRUE,
+        'null' => FALSE
+      ),
+      'value' => array(
+        'type' => 'INT',
+        'constraint' => '15',
+        'unsigned' => TRUE,
         'null' => FALSE
       ),
       'created_on' => array(
@@ -213,57 +260,123 @@ class Migration_Add_order extends CI_Migration {
         'unsigned' => TRUE,
         'auto_increment' => TRUE
       ),
-      'mp_id' => array(
+      'order_id' => array(
         'type' => 'MEDIUMINT',
         'constraint' => '8',
         'unsigned' => TRUE,
         'null' => FALSE
       ),
-      'barcode' => array(
+      'date' => array(
+        'type' => 'DATE',
+        'null' => FALSE
+      ),
+      'item' => array(
+        'type' => 'INT',
+        'constraint' => '8',
+        'null' => FALSE
+      ),
+      'payment_type' => array(
+        'type' => 'INT',
+        'constraint' => '8',
+        'null' => FALSE
+      ),
+      'currency' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '4',
+        'null' => FALSE
+      ),
+      'pay_amount' => array(
+        'type' => 'INT',
+        'constraint' => '15',
+        'unsigned' => TRUE,
+        'null' => FALSE
+      ),
+      'cash_tender' => array(
+        'type' => 'INT',
+        'constraint' => '15',
+        'unsigned' => TRUE,
+        'null' => FALSE
+      ),
+      'creditcard_cr_id' => array(
+        'type' => 'MEDIUMINT',
+        'constraint' => '8',
+        'unsigned' => TRUE,
+        'null' => TRUE
+      ),
+      'creditcard_cr_hn' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '100',
+        'null' => TRUE
+      ),
+      'creditcard_cr_no' => array(
         'type' => 'VARCHAR',
         'constraint' => '20',
-        'null' => FALSE
+        'null' => TRUE
       ),
-      'price1' => array(
-        'type' => 'INT',
-        'constraint' => '15',
-        'unsigned' => TRUE,
-        'DEFAULT' => '0',
-        'null' => FALSE
+      'creditcard_approval_text' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '100',
+        'null' => TRUE
       ),
-      'price2' => array(
-        'type' => 'INT',
-        'constraint' => '15',
-        'unsigned' => TRUE,
-        'DEFAULT' => '0',
-        'null' => FALSE
+      'creditcard_approval_code' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '20',
+        'null' => TRUE
       ),
-      'price3' => array(
-        'type' => 'INT',
-        'constraint' => '15',
-        'unsigned' => TRUE,
-        'DEFAULT' => '0',
-        'null' => FALSE
+      'creditcard_invoice_number' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '20',
+        'null' => TRUE
       ),
-      'price4' => array(
-        'type' => 'INT',
-        'constraint' => '15',
-        'unsigned' => TRUE,
-        'DEFAULT' => '0',
-        'null' => FALSE
+      'creditcard_terminal_id' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '20',
+        'null' => TRUE
       ),
-      'unit_id' => array(
-        'type' => 'MEDIUMINT',
-        'constraint' => '8',
-        'unsigned' => TRUE,
-        'null' => FALSE
+      'creditcard_merchant_number' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '20',
+        'null' => TRUE
       ),
-      'unit_ratio' => array(
-        'type' => 'MEDIUMINT',
-        'constraint' => '8',
-        'unsigned' => TRUE,
-        'DEFAULT' => '1',
-        'null' => FALSE
+      'creditcard_card_issue_name' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '20',
+        'null' => TRUE
+      ),
+      'creditcard_card_number' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '20',
+        'null' => TRUE
+      ),
+      'creditcard_card_expiry' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '20',
+        'null' => TRUE
+      ),  
+      'creditcard_batch_number' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '20',
+        'null' => TRUE
+      ),
+      'creditcard_transaction_date' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '20',
+        'null' => TRUE
+      ),
+      'creditcard_transaction_time' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '20',
+        'null' => TRUE
+      ),
+      'prepaid_card_no' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '20',
+        'null' => TRUE
+      ),
+      'welfare_card_no' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '20',
+        'null' => TRUE
       ),
       'created_on' => array(
         'type' => 'INT',
