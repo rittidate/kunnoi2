@@ -1,14 +1,25 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
- * An open source application development framework for PHP 5.1.6 or newer
+ * An open source application development framework for PHP 5.2.4 or newer
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the Open Software License version 3.0
+ *
+ * This source file is subject to the Open Software License (OSL 3.0) that is
+ * bundled with this package in the files license.txt / license.rst.  It is
+ * also available through the world wide web at this URL:
+ * http://opensource.org/licenses/OSL-3.0
+ * If you did not receive a copy of the license and are unable to obtain it
+ * through the world wide web, please send an email to
+ * licensing@ellislab.com so we can send you a copy immediately.
  *
  * @package		CodeIgniter
  * @author		EllisLab Dev Team
- * @copyright		Copyright (c) 2008 - 2014, EllisLab, Inc.
- * @copyright		Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
- * @license		http://codeigniter.com/user_guide/license.html
+ * @copyright	Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
+ * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -31,6 +42,7 @@ class CI_Upload {
 	public $max_width				= 0;
 	public $max_height				= 0;
 	public $max_filename			= 0;
+	public $max_filename_increment 	= 100;
 	public $allowed_types			= "";
 	public $file_temp				= "";
 	public $file_name				= "";
@@ -81,31 +93,32 @@ class CI_Upload {
 	public function initialize($config = array())
 	{
 		$defaults = array(
-							'max_size'			=> 0,
-							'max_width'			=> 0,
-							'max_height'		=> 0,
-							'max_filename'		=> 0,
-							'allowed_types'		=> "",
-							'file_temp'			=> "",
-							'file_name'			=> "",
-							'orig_name'			=> "",
-							'file_type'			=> "",
-							'file_size'			=> "",
-							'file_ext'			=> "",
-							'upload_path'		=> "",
-							'overwrite'			=> FALSE,
-							'encrypt_name'		=> FALSE,
-							'is_image'			=> FALSE,
-							'image_width'		=> '',
-							'image_height'		=> '',
-							'image_type'		=> '',
-							'image_size_str'	=> '',
-							'error_msg'			=> array(),
-							'mimes'				=> array(),
-							'remove_spaces'		=> TRUE,
-							'xss_clean'			=> FALSE,
-							'temp_prefix'		=> "temp_file_",
-							'client_name'		=> ''
+							'max_size'					=> 0,
+							'max_width'					=> 0,
+							'max_height'				=> 0,
+							'max_filename'				=> 0,
+							'max_filename_increment'	=> 100,
+							'allowed_types'				=> "",
+							'file_temp'					=> "",
+							'file_name'					=> "",
+							'orig_name'					=> "",
+							'file_type'					=> "",
+							'file_size'					=> "",
+							'file_ext'					=> "",
+							'upload_path'				=> "",
+							'overwrite'					=> FALSE,
+							'encrypt_name'				=> FALSE,
+							'is_image'					=> FALSE,
+							'image_width'				=> '',
+							'image_height'				=> '',
+							'image_type'				=> '',
+							'image_size_str'			=> '',
+							'error_msg'					=> array(),
+							'mimes'						=> array(),
+							'remove_spaces'				=> TRUE,
+							'xss_clean'					=> FALSE,
+							'temp_prefix'				=> "temp_file_",
+							'client_name'				=> ''
 						);
 
 
@@ -257,8 +270,7 @@ class CI_Upload {
 		}
 
 		// Sanitize the file name for security
-		$CI =& get_instance();
-		$this->file_name = $CI->security->sanitize_filename($this->file_name);
+		$this->file_name = $this->clean_file_name($this->file_name);
 
 		// Truncate the file name if it's too long
 		if ($this->max_filename > 0)
@@ -405,7 +417,7 @@ class CI_Upload {
 		$filename = str_replace($this->file_ext, '', $filename);
 
 		$new_filename = '';
-		for ($i = 1; $i < 100; $i++)
+		for ($i = 1; $i < $this->max_filename_increment; $i++)
 		{
 			if ( ! file_exists($path.$filename.$i.$this->file_ext))
 			{
@@ -581,16 +593,17 @@ class CI_Upload {
 	/**
 	 * Verify that the filetype is allowed
 	 *
+	 * @param	bool
 	 * @return	bool
 	 */
 	public function is_allowed_filetype($ignore_mime = FALSE)
 	{
-		if ($this->allowed_types == '*')
+		if ($this->allowed_types === '*')
 		{
 			return TRUE;
 		}
 
-		if (count($this->allowed_types) == 0 OR ! is_array($this->allowed_types))
+		if ( ! is_array($this->allowed_types) OR count($this->allowed_types) === 0)
 		{
 			$this->set_error('upload_no_file_types');
 			return FALSE;
@@ -606,12 +619,9 @@ class CI_Upload {
 		// Images get some additional checks
 		$image_types = array('gif', 'jpg', 'jpeg', 'png', 'jpe');
 
-		if (in_array($ext, $image_types))
+		if (in_array($ext, $image_types) && @getimagesize($this->file_temp) === FALSE)
 		{
-			if (getimagesize($this->file_temp) === FALSE)
-			{
-				return FALSE;
-			}
+			return FALSE;
 		}
 
 		if ($ignore_mime === TRUE)
@@ -628,7 +638,7 @@ class CI_Upload {
 				return TRUE;
 			}
 		}
-		elseif ($mime == $this->file_type)
+		elseif ($mime === $this->file_type)
 		{
 				return TRUE;
 		}
@@ -747,14 +757,43 @@ class CI_Upload {
 	/**
 	 * Clean the file name for security
 	 *
-	 * @deprecated	2.2.1	Alias for CI_Security::sanitize_filename()
-	 * @param	string	$filename
+	 * @param	string
 	 * @return	string
 	 */
 	public function clean_file_name($filename)
 	{
-		$CI =& get_instance();
-		return $CI->security->sanitize_filename($filename);
+		$bad = array(
+						"<!--",
+						"-->",
+						"'",
+						"<",
+						">",
+						'"',
+						'&',
+						'$',
+						'=',
+						';',
+						'?',
+						'/',
+						"%20",
+						"%22",
+						"%3c",		// <
+						"%253c",	// <
+						"%3e",		// >
+						"%0e",		// >
+						"%28",		// (
+						"%29",		// )
+						"%2528",	// (
+						"%26",		// &
+						"%24",		// $
+						"%3f",		// ?
+						"%3b",		// ;
+						"%3d"		// =
+					);
+
+		$filename = str_replace($bad, '', $filename);
+
+		return stripslashes($filename);
 	}
 
 	// --------------------------------------------------------------------
@@ -841,10 +880,6 @@ class CI_Upload {
 			{
 				return TRUE; // its an image, no "triggers" detected in the first 256 bytes, we're good
 			}
-			else
-			{
-				return FALSE;
-			}
 		}
 
 		if (($data = @file_get_contents($file)) === FALSE)
@@ -897,13 +932,7 @@ class CI_Upload {
 	 */
 	public function display_errors($open = '<p>', $close = '</p>')
 	{
-		$str = '';
-		foreach ($this->error_msg as $val)
-		{
-			$str .= $open.$val.$close;
-		}
-
-		return $str;
+		return (count($this->error_msg) > 0) ? $open . implode($close . $open, $this->error_msg) . $close : '';
 	}
 
 	// --------------------------------------------------------------------
@@ -929,7 +958,7 @@ class CI_Upload {
 			}
 			elseif (is_file(APPPATH.'config/mimes.php'))
 			{
-				include(APPPATH.'config//mimes.php');
+				include(APPPATH.'config/mimes.php');
 			}
 			else
 			{
@@ -1025,7 +1054,7 @@ class CI_Upload {
 
 		/* This is an ugly hack, but UNIX-type systems provide a "native" way to detect the file type,
 		 * which is still more secure than depending on the value of $_FILES[$field]['type'], and as it
-		 * was reported in issue #750 (https://github.com/bcit-ci/CodeIgniter/issues/750) - it's better
+		 * was reported in issue #750 (https://github.com/EllisLab/CodeIgniter/issues/750) - it's better
 		 * than mime_content_type() as well, hence the attempts to try calling the command line with
 		 * three different functions.
 		 *

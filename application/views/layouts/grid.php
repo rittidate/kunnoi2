@@ -7,7 +7,7 @@
 
     <?= css_asset('normalize.css', 'bukku'); ?>
     <?= css_asset('bootstrap.min.css', 'bootstrap'); ?>
-    <?= css_asset('app.css'); ?>
+    <?= css_asset('sass/app.css'); ?>
 
     <?= css_asset('demos.css', 'jsgrid'); ?>
     <?= css_asset('jsgrid.css', 'jsgrid'); ?>

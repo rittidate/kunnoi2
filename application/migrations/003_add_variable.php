@@ -75,6 +75,20 @@ class Migration_Add_variable extends CI_Migration {
         'constraint' => '255',
         'null' => TRUE
       ),
+      'active' => array(
+        'type' => 'TINYINT',
+        'constraint' => '1',
+        'unsigned' => TRUE,
+        'default' => '1',
+        'null' => FALSE
+      ),
+      'deleted' => array(
+        'type' => 'TINYINT',
+        'constraint' => '1',
+        'unsigned' => TRUE,
+        'default' => '0',
+        'null' => FALSE
+      ),
       'created_on' => array(
         'type' => 'INT',
         'constraint' => '11',

@@ -62,7 +62,11 @@ class Layouts {
         $param_name = $match[1];
         $this->layout_componet[$param_name] = $view_content;
       }
-      
+  }
+
+  public function add_page_component($view_name, $params = array())
+  {
+      return $this->CI->load->view($view_name, $params, TRUE);
   }
     
   public function add_include($path, $prepend_base_url = TRUE) 

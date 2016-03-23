@@ -2,13 +2,24 @@
 /**
  * CodeIgniter
  *
- * An open source application development framework for PHP 5.1.6 or newer
+ * An open source application development framework for PHP 5.2.4 or newer
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the Open Software License version 3.0
+ *
+ * This source file is subject to the Open Software License (OSL 3.0) that is
+ * bundled with this package in the files license.txt / license.rst.  It is
+ * also available through the world wide web at this URL:
+ * http://opensource.org/licenses/OSL-3.0
+ * If you did not receive a copy of the license and are unable to obtain it
+ * through the world wide web, please send an email to
+ * licensing@ellislab.com so we can send you a copy immediately.
  *
  * @package		CodeIgniter
  * @author		EllisLab Dev Team
- * @copyright		Copyright (c) 2006 - 2014 EllisLab, Inc.
- * @copyright		Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
- * @license		http://codeigniter.com/user_guide/license.html
+ * @copyright	Copyright (c) 2006 - 2012 EllisLab, Inc.
+ * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * @link		http://codeigniter.com
  * @since		Version 2.0
  * @filesource
@@ -28,20 +39,17 @@
 class CI_Cache extends CI_Driver_Library {
 
 	protected $valid_drivers 	= array(
-		'cache_apc', 'cache_file', 'cache_memcached', 'cache_dummy'
-	);
+						'cache_apc',
+						'cache_file',
+						'cache_memcached',
+						'cache_dummy',
+						'cache_wincache'
+					);
 
-	protected $_cache_path		= NULL;		// Path of cache files (if file-based cache)
-	protected $_adapter			= 'dummy';
+	protected $_cache_path		= NULL;	// Path of cache files (if file-based cache)
+	protected $_adapter		= 'dummy';
 	protected $_backup_driver;
 
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Constructor
-	 *
-	 * @param array
-	 */
 	public function __construct($config = array())
 	{
 		if ( ! empty($config))
@@ -204,13 +212,14 @@ class CI_Cache extends CI_Driver_Library {
 		if ( ! $this->is_supported($child))
 		{
 			$this->_adapter = $this->_backup_driver;
-			$obj = parent::__get($this->_adapter);
 		}
 
 		return $obj;
 	}
 
+	// ------------------------------------------------------------------------
 }
+// End Class
 
 /* End of file Cache.php */
 /* Location: ./system/libraries/Cache/Cache.php */
