@@ -2,13 +2,24 @@
 /**
  * CodeIgniter
  *
- * An open source application development framework for PHP 5.1.6 or newer
+ * An open source application development framework for PHP 5.2.4 or newer
+ *
+ * NOTICE OF LICENSE
+ * 
+ * Licensed under the Open Software License version 3.0
+ * 
+ * This source file is subject to the Open Software License (OSL 3.0) that is
+ * bundled with this package in the files license.txt / license.rst.  It is
+ * also available through the world wide web at this URL:
+ * http://opensource.org/licenses/OSL-3.0
+ * If you did not receive a copy of the license and are unable to obtain it
+ * through the world wide web, please send an email to
+ * licensing@ellislab.com so we can send you a copy immediately.
  *
  * @package		CodeIgniter
  * @author		EllisLab Dev Team
- * @copyright		Copyright (c) 2008 - 2014, EllisLab, Inc.
- * @copyright		Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
- * @license		http://codeigniter.com/user_guide/license.html
+ * @copyright	Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
+ * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -289,9 +300,9 @@ if ( ! function_exists('highlight_code'))
 
 		// Replace any existing PHP tags to temporary markers so they don't accidentally
 		// break the string out of PHP, and thus, thwart the highlighting.
-
 		$str = str_replace(array('<?', '?>', '<%', '%>', '\\', '</script>'),
-							array('phptagopen', 'phptagclose', 'asptagopen', 'asptagclose', 'backslashtmp', 'scriptclose'), $str);
+					array('phptagopen', 'phptagclose', 'asptagopen', 'asptagclose', 'backslashtmp', 'scriptclose'),
+					$str);
 
 		// The highlight_string function requires that the text be surrounded
 		// by PHP tags, which we will remove later
@@ -306,10 +317,9 @@ if ( ! function_exists('highlight_code'))
 		$str = preg_replace('/<span style="color: #[A-Z0-9]+"\><\/span>/i', '', $str);
 
 		// Replace our markers back to PHP tags.
-		$str = str_replace(array('phptagopen', 'phptagclose', 'asptagopen', 'asptagclose', 'backslashtmp', 'scriptclose'),
-							array('&lt;?', '?&gt;', '&lt;%', '%&gt;', '\\', '&lt;/script&gt;'), $str);
-
-		return $str;
+		return str_replace(array('phptagopen', 'phptagclose', 'asptagopen', 'asptagclose', 'backslashtmp', 'scriptclose'),
+					array('&lt;?', '?&gt;', '&lt;%', '%&gt;', '\\', '&lt;/script&gt;'),
+					$str);
 	}
 }
 

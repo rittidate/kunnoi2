@@ -46,6 +46,11 @@ class Back extends CI_Controller {
     $this->layouts->view('home', array(), 'backoffice');
   }
 
+  public function setting()
+  {
+    var_dump($this->input->post());
+  }
+
 }
 
 /* End of file welcome.php */

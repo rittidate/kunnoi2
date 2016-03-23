@@ -11,7 +11,7 @@
       <meta name="viewport" content="width=device-width">
       <?= css_asset('normalize.css', 'bukku'); ?>
       <?= css_asset('bootstrap.min.css', 'bootstrap'); ?>
-      <?= css_asset('app.css'); ?>
+      <?= css_asset('sass/app.css'); ?>
       <?= $this->layouts->print_includes(); ?> 
   </head>
   <body>

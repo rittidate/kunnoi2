@@ -2,13 +2,24 @@
 /**
  * CodeIgniter
  *
- * An open source application development framework for PHP 5.1.6 or newer
+ * An open source application development framework for PHP 5.2.4 or newer
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the Open Software License version 3.0
+ *
+ * This source file is subject to the Open Software License (OSL 3.0) that is
+ * bundled with this package in the files license.txt / license.rst.  It is
+ * also available through the world wide web at this URL:
+ * http://opensource.org/licenses/OSL-3.0
+ * If you did not receive a copy of the license and are unable to obtain it
+ * through the world wide web, please send an email to
+ * licensing@ellislab.com so we can send you a copy immediately.
  *
  * @package		CodeIgniter
  * @author		EllisLab Dev Team
- * @copyright		Copyright (c) 2006 - 2014 EllisLab, Inc.
- * @copyright		Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
- * @license		http://codeigniter.com/user_guide/license.html
+ * @copyright	Copyright (c) 2006 - 2012 EllisLab, Inc.
+ * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * @link		http://codeigniter.com
  * @since		Version 2.0
  * @filesource
@@ -25,6 +36,7 @@
  * @author		EllisLab Dev Team
  * @link
  */
+
 class CI_Cache_apc extends CI_Driver {
 
 	/**
@@ -56,6 +68,7 @@ class CI_Cache_apc extends CI_Driver {
 	 */
 	public function save($id, $data, $ttl = 60)
 	{
+		$ttl = (int) $ttl;
 		return apc_store($id, array($data, time(), $ttl), $ttl);
 	}
 
@@ -92,10 +105,10 @@ class CI_Cache_apc extends CI_Driver {
 	 * @param 	string		user/filehits
 	 * @return 	mixed		array on success, false on failure
 	 */
-	public function cache_info($type = NULL)
-	{
-		return apc_cache_info($type);
-	}
+	 public function cache_info($type = NULL)
+	 {
+		 return apc_cache_info($type);
+	 }
 
 	// ------------------------------------------------------------------------
 
@@ -141,7 +154,11 @@ class CI_Cache_apc extends CI_Driver {
 		return TRUE;
 	}
 
+	// ------------------------------------------------------------------------
+
+
 }
+// End Class
 
 /* End of file Cache_apc.php */
 /* Location: ./system/libraries/Cache/drivers/Cache_apc.php */
