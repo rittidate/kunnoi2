@@ -2,13 +2,24 @@
 /**
  * CodeIgniter
  *
- * An open source application development framework for PHP 5.1.6 or newer
+ * An open source application development framework for PHP 5.2.4 or newer
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the Open Software License version 3.0
+ *
+ * This source file is subject to the Open Software License (OSL 3.0) that is
+ * bundled with this package in the files license.txt / license.rst.  It is
+ * also available through the world wide web at this URL:
+ * http://opensource.org/licenses/OSL-3.0
+ * If you did not receive a copy of the license and are unable to obtain it
+ * through the world wide web, please send an email to
+ * licensing@ellislab.com so we can send you a copy immediately.
  *
  * @package		CodeIgniter
  * @author		EllisLab Dev Team
- * @copyright		Copyright (c) 2008 - 2014, EllisLab, Inc.
- * @copyright		Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
- * @license		http://codeigniter.com/user_guide/license.html
+ * @copyright	Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
+ * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -83,16 +94,15 @@ if ( ! function_exists('create_captcha'))
 		// Remove old images
 		// -----------------------------------
 
-		list($usec, $sec) = explode(" ", microtime());
-		$now = ((float)$usec + (float)$sec);
+		$now = microtime(TRUE);
 
 		$current_dir = @opendir($img_path);
 
 		while ($filename = @readdir($current_dir))
 		{
-			if ($filename != "." and $filename != ".." and $filename != "index.html")
+			if ($filename != '.' && $filename != '..' && $filename != 'index.html')
 			{
-				$name = str_replace(".jpg", "", $filename);
+				$name = str_replace('.jpg', '', $filename);
 
 				if (($name + $expiration) < $now)
 				{
@@ -107,93 +117,18 @@ if ( ! function_exists('create_captcha'))
 		// Do we have a "word" yet?
 		// -----------------------------------
 
-		// -----------------------------------
-		// Do we have a "word" yet?
-		// -----------------------------------
-
-		if (empty($word))
-		{
-			$word = '';
+	   if ($word == '')
+	   {
 			$pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-			$pool_length = strlen($pool);
-			$rand_max = $pool_length - 1;
 
-			// PHP7 or a suitable polyfill
-			if (function_exists('random_int'))
+			$str = '';
+			for ($i = 0; $i < 8; $i++)
 			{
-				try
-				{
-					for ($i = 0; $i < $word_length; $i++)
-					{
-						$word .= $pool[random_int(0, $rand_max)];
-					}
-				}
-				catch (Exception $e)
-				{
-					// This means fallback to the next possible
-					// alternative to random_int()
-					$word = '';
-				}
+				$str .= substr($pool, mt_rand(0, strlen($pool) -1), 1);
 			}
-		}
 
-		if (empty($word))
-		{
-			// To avoid numerous get_random_bytes() calls, we'll
-			// just try fetching as much bytes as we need at once.
-			if (($bytes = _ci_captcha_get_random_bytes($pool_length)) !== FALSE)
-			{
-				$byte_index = $word_index = 0;
-				while ($word_index < $word_length)
-				{
-					if (($rand_index = unpack('C', $bytes[$byte_index++])) > $rand_max)
-					{
-						// Was this the last byte we have?
-						// If so, try to fetch more.
-						if ($byte_index === $pool_length)
-						{
-							// No failures should be possible if
-							// the first get_random_bytes() call
-							// didn't return FALSE, but still ...
-							for ($i = 0; $i < 5; $i++)
-							{
-								if (($bytes = _ci_captcha_get_random_bytes($pool_length)) === FALSE)
-								{
-									continue;
-								}
-
-								$byte_index = 0;
-								break;
-							}
-
-							if ($bytes === FALSE)
-							{
-								// Sadly, this means fallback to mt_rand()
-								$word = '';
-								break;
-							}
-						}
-
-						continue;
-					}
-
-					$word .= $pool[$rand_index];
-					$word_index++;
-				}
-			}
-		}
-
-		if (empty($word))
-		{
-			for ($i = 0; $i < $word_length; $i++)
-			{
-				$word .= $pool[mt_rand(0, $rand_max)];
-			}
-		}
-		elseif ( ! is_string($word))
-		{
-			$word = (string) $word;
-		}
+			$word = $str;
+	   }
 
 		// -----------------------------------
 		// Determine angle and position
@@ -262,7 +197,7 @@ if ( ! function_exists('create_captcha'))
 		//  Write the text
 		// -----------------------------------
 
-		$use_font = ($font_path != '' AND file_exists($font_path) AND function_exists('imagettftext')) ? TRUE : FALSE;
+		$use_font = ($font_path != '' && file_exists($font_path) && function_exists('imagettftext')) ? TRUE : FALSE;
 
 		if ($use_font == FALSE)
 		{
@@ -314,23 +249,9 @@ if ( ! function_exists('create_captcha'))
 
 		return array('word' => $word, 'time' => $now, 'image' => $img);
 	}
-
-	function _ci_captcha_get_random_bytes($length)
-	{
-		if (defined('MCRYPT_DEV_URANDOM'))
-		{
-			return mcrypt_create_iv($length, MCRYPT_DEV_URANDOM);
-		}
-		elseif (function_exists('openssl_random_pseudo_bytes'))
-		{
-			return openssl_random_pseudo_bytes($length);
-		}
-
-		return FALSE;
-	}
 }
 
 // ------------------------------------------------------------------------
 
 /* End of file captcha_helper.php */
-/* Location: ./system/heleprs/captcha_helper.php */
+/* Location: ./system/helpers/captcha_helper.php */

@@ -1,0 +1,40 @@
+.content-wrapper
+  %section{:class => 'content-header'}
+    %h1 
+      %i{:class => 'fa fa-wrench'}
+      %span Zone
+      %small Setting
+    %ol{:class => 'breadcrumb'}
+      %li
+        %i{:class => 'fa fa-cog'}
+        %span Setting
+      %li Zone
+      %li =$action
+  %section{:class => 'content'}
+    .row
+      = $sidebar
+      .col-xs-9
+        .box.box-info
+          .box-header.with-border
+            %h3{:class => 'box-title'} =$action
+              %span Zone
+          %form{:class => 'form-horizontal', :method => 'post', :action => '/admin/zone/#{$action == "new" ? "create" : "update"}'}
+            %input{:type => 'hidden', :value => '#{!empty($data) ? $data[0]->id : ""}', :id => 'id', :name => 'id'}
+            .box-body
+              .form-group
+                %lable{:for => 'abb_zone', :class => 'col-sm-3 control-label'} Zone
+                .col-sm-9
+                  %input{:type => 'input', :value => '#{!empty($data) ? $data[0]->e_abb_name : ""}', :class => 'form-control', :id => 'e_abb_name', :name => 'e_abb_name', :placeholder => 'Zone', :required => ''}
+              .form-group
+                %lable{:for => 'full_zone', :class => 'col-sm-3 control-label'} Description
+                .col-sm-9
+                  %input{:type => 'input', :value => '#{!empty($data) ? $data[0]->e_full_name : ""}', :class => 'form-control', :id => 'e_full_name', :name => 'e_full_name', :placeholder => 'Description'}
+              .form-group
+                %lable{:for => 'value1', :class => 'col-sm-3 control-label'} Number
+                .col-sm-9
+                  %input{:type => 'number', :value => '#{!empty($data) ? $data[0]->value1 : ""}', :class => 'form-control', :id => 'value1', :name => 'value1', :placeholder => 'Number', :required => ''}
+            .box-footer
+              %a{:href => '/admin/zone', :class => 'btn btn-default'}
+                %i{:class => 'fa fa-back'}
+                %span Back
+              %button{:type => 'submit', class => 'btn btn-info pull-right'} Submit
