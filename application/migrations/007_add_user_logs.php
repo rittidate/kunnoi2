@@ -29,7 +29,7 @@ class Migration_Add_user_logs extends CI_Migration {
         'null' => FALSE
       ),
     ));
-
+    $this->dbforge->add_key('id', TRUE);
     $this->dbforge->create_table('user_logs');
   }
   
