@@ -3,7 +3,7 @@
 if(!class_exists('CI_Model')) { class CI_Model extends Model {} }
 
 
-class Variable extends CI_Model
+class Zone extends CI_Model
 {
 
   public function __construct()

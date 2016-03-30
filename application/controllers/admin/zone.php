@@ -11,14 +11,14 @@ class Zone extends CI_Controller {
     $this->page_comoponent();
 
     //query data
-    $this->load->model('Variable', '', TRUE);
+    $this->load->model('Zone', '', TRUE);
   }
 
   public function index()
   {
     $this->layouts->set_title('Zone setting');
 
-    $this->page_data['zone'] = $this->Variable->get_zone();
+    $this->page_data['zone'] = $this->Zone->get_zone();
      
     $this->layouts->view('admin/zone/index', $this->page_data, 'admin');
   }
@@ -36,7 +36,7 @@ class Zone extends CI_Controller {
       
       case 'edit':
         $this->layouts->set_title('Edit Zone');
-        $this->page_data['data'] = $this->Variable->get_zone($id);
+        $this->page_data['data'] = $this->Zone->get_zone($id);
         break;
 
       default:
@@ -50,7 +50,7 @@ class Zone extends CI_Controller {
   public function create($action = '', $id = '')
   {
     $data = $this->input->post();
-    if($this->Variable->create_zone($data))
+    if($this->Zone->create_zone($data))
       redirect('admin/zone', 'refresh');
   }
 
@@ -59,7 +59,7 @@ class Zone extends CI_Controller {
     $action = $this->input->get('action');
     $id =  $this->input->get('id');
     if($action == 'delete' && !empty($id)){
-      $this->Variable->delete_zone($id);
+      $this->Zone->delete_zone($id);
     }
     redirect('admin/zone', 'refresh'); 
   }
@@ -68,7 +68,7 @@ class Zone extends CI_Controller {
   {
     $data = $this->input->post();
       
-    if($this->Variable->update_zone($data))
+    if($this->Zone->update_zone($data))
       redirect('admin/zone', 'refresh'); 
   }
 

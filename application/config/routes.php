@@ -64,7 +64,7 @@
 |
 */
 
-$route['default_controller'] = "home";
+$route['default_controller'] = "pos";
 $route['404_override'] = '';
 
 

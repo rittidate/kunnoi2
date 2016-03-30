@@ -24,9 +24,6 @@ class Migration_Add_order_table extends CI_Migration {
         'null' => FALSE
       )
     ));
-    $this->dbforge->add_key('order_id', TRUE);
-    $this->dbforge->add_key('section', TRUE);
-    $this->dbforge->add_key('table_number', TRUE);
     $this->dbforge->create_table('pos_order_tables');
   }
   

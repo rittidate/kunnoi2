@@ -38,8 +38,13 @@ class Home extends CI_Controller {
 	public function index()
 	{
     $this->load->library('Layouts');
-    $this->layouts->view('home', array(), 'grid');
+    $this->layouts->view('home', array(), 'pos');
 	}
+
+  public function grid()
+  {
+
+  }
 }
 
 /* End of file welcome.php */

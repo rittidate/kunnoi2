@@ -8,15 +8,17 @@
 
     <?= css_asset('normalize.css', 'bukku'); ?>
     <?= css_asset('bootstrap.min.css', 'bootstrap'); ?>
-    <?= css_asset('sass/app.css'); ?>
+    <?= css_asset('sass/pos.css'); ?>
 
     <?= css_asset('demos.css', 'jsgrid'); ?>
     <?= css_asset('jsgrid.css', 'jsgrid'); ?>
     <?= css_asset('theme.css', 'jsgrid'); ?>
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
     <?= js_asset('jquery-1.11.1.min.js', 'bukku'); ?>
     <?= js_asset('bootstrap.min.js', 'bootstrap'); ?> 
-    <?= js_asset('db.js', 'jsgrid'); ?>
 
     <?= js_asset('jsgrid.core.js', 'jsgrid'); ?>
     <?= js_asset('jsgrid.load-indicator.js', 'jsgrid'); ?>
@@ -28,6 +30,7 @@
     <?= js_asset('fields/jsgrid.field.select.js', 'jsgrid'); ?>
     <?= js_asset('fields/jsgrid.field.checkbox.js', 'jsgrid'); ?>
     <?= js_asset('fields/jsgrid.field.control.js', 'jsgrid'); ?>
+
 </head>
 <body>
     <?php echo $content_for_layout; ?>
