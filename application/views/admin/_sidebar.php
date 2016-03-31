@@ -34,7 +34,7 @@
       <!-- Optionally, you can add icons to the links -->
       <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
       <li>
-        <a href="/admin/zone">
+        <a href="/admin/zones">
           <i class="fa fa-cog"></i> 
           <span>Setting</span> 
         </a>

@@ -13,6 +13,12 @@ class Migration_Add_order extends CI_Migration {
         'unsigned' => TRUE,
         'auto_increment' => TRUE
       ),
+      'zone_id' => array(
+        'type' => 'MEDIUMINT',
+        'constraint' => '8',
+        'unsigned' => TRUE,
+        'null' => FALSE
+      ),
       'date' => array(
         'type' => 'DATE',
         'null' => FALSE

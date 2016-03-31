@@ -71,19 +71,50 @@ body {
     }
   }
 
-
+  tr.js-order-detail-row{
+    td:nth-child(1), td:nth-child(3), td:nth-child(5){
+      padding-top: 15px;
+    }
+  }
 
   #order-list{
     padding-top: 0;
   }
   .panel-footer{
     font-size: 30px;
+
+    #js-subtotal.form-control{
+      display: inline-block !important;
+      text-align: right;
+      font-weight: bold;
+    }
   }
   #pos-btn-panel{
     .btn{
       font-size: 1.8em;
       margin: 5px 13px;
       height: 50px;
+    }
+  }
+}
+
+#productModal{
+  .js-product-select-btn{
+    width: 150px;
+    height: 60px;
+    margin: 10px 0;
+  }
+}
+
+.delete-modal{
+ .modal-dialog{
+    width: 300px;
+  }
+
+  .modal-body{
+    text-align: center;
+    .button-box{
+      margin: 20px 0 0;
     }
   }
 }

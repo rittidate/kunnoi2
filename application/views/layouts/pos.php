@@ -30,7 +30,7 @@
     <?= js_asset('fields/jsgrid.field.select.js', 'jsgrid'); ?>
     <?= js_asset('fields/jsgrid.field.checkbox.js', 'jsgrid'); ?>
     <?= js_asset('fields/jsgrid.field.control.js', 'jsgrid'); ?>
-
+    <?= js_asset('jQuery.print.js'); ?>
 </head>
 <body>
     <?php echo $content_for_layout; ?>

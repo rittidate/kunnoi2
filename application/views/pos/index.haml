@@ -20,10 +20,11 @@
     .row
       .user-panel{:class => 'col-sm-3 col-md-3'}
         .user-detail{:class => 'pull-left'}
-          %strong พนักงาน
-          %span{:class => 'label label-default'} อั๋น
-        %button{:class => 'btn btn-danger pull-right'} Sign Out
-        %button{:class => 'btn btn-success pull-right'} Admin
+          %span{:class => 'label label-default'} = $user->username
+        %a{:href => 'user/logout', :class => 'btn btn-danger pull-right'} Sign Out
+        - if($user_grop == 'admin'):
+          %a{:href => 'admin/zones', :class => 'btn btn-success pull-right'} Admin
+        - endif
       #js-grid{:class => 'col-sm-3 col-md-3'}
         #jsGrid
 
@@ -60,8 +61,7 @@
             pageButtonCount: 5,
             deleteConfirm: "Do you really want to delete the client?",
             data: obj,
-            rowClick: function(data) { 
-                //console.log(data.item.order);
+            rowClick: function(data) {
                 window.location.replace('/pos/order/?zone='+data.item.zone+'&order='+data.item.order);
             },
             fields: [

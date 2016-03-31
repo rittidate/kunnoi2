@@ -34,11 +34,6 @@ class User extends CI_Controller {
     $this->load->library('form_validation');
   }
 
-  public function index()
-  {
-
-  }
-
   //log the user in
   function login()
   {
@@ -101,6 +96,15 @@ class User extends CI_Controller {
 
       $this->layouts->view('user/login', $this->data);
     }
+  }
+
+  function logout()
+  {
+    //log the user out
+    $logout = $this->ion_auth->logout();
+
+    //redirect them back to the page they came from
+    redirect('user/login', 'refresh');
   }
 }
 

@@ -17,7 +17,7 @@
           .box-header
             %h3{:class =>'box-title'} Zone Setting
             .box-tools
-              %a{:type =>'button', :class => 'btn btn-success pull-right', :href => 'zone/edit/?action=new'}
+              %a{:type =>'button', :class => 'btn btn-success pull-right', :href => 'zones/edit/?action=new'}
                 %i{:class => 'fa fa-plus'}  
                 %span Add
           .box-body{:class => 'table-responsive no-padding'}
@@ -37,9 +37,9 @@
                   %td #{$item->value1}
                   %td
                     .box-tools
-                      %a{:href => 'zone/edit/?action=edit&id=#{$item->id}', :type =>'button', :class => 'btn btn-warning'}
+                      %a{:href => 'zones/edit/?action=edit&id=#{$item->id}', :type =>'button', :class => 'btn btn-warning'}
                         %i{:class => 'fa fa-wrench'} 
-                      %a{:href => '#', :data-href => 'zone/del/?action=delete&id=#{$item->id}', :type =>'button', :class => 'btn btn-danger',:data-toggle => "modal", :data-target =>"#confirm-delete"}
+                      %a{:href => '#', :data-href => 'zones/del/?action=delete&id=#{$item->id}', :type =>'button', :class => 'btn btn-danger',:data-toggle => "modal", :data-target =>"#confirm-delete"}
                         %i{:class => 'fa fa-trash'} 
                 - $i++
               - endforeach

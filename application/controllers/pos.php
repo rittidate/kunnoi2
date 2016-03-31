@@ -36,8 +36,9 @@ class Pos extends CI_Controller {
     $this->load->library('form_validation');
     $this->load->database();
 
-    //query data
-    
+    if (!$this->ion_auth->logged_in())
+        redirect('user/login', 'refresh');
+
   }
 
   public function index()
@@ -48,6 +49,8 @@ class Pos extends CI_Controller {
     $this->data['zone'] = $this->Zone->get_zone();
 
     $this->data['client'] = array();
+    $this->data['user_grop'] = $this->session->userdata('group');
+    $this->data['user'] = $this->ion_auth->get_user();
 
     $this->layouts->view('pos/index', $this->data, 'pos');
   }
@@ -55,39 +58,81 @@ class Pos extends CI_Controller {
   public function order()
   {
     $this->load->model('Zone', '', TRUE);
+    $this->load->model('Order', '', TRUE);
 
     $this->data['zone_id'] =  $this->input->get('zone');
     $this->data['order_id'] =  $this->input->get('order');
 
-    if($this->Zone->get_zone($this->data['zone_id']) == FALSE){
-      redirect('pos', 'refresh');
-    }else{
-
-      $zone = $this->Zone->get_zone($this->data['zone_id']);
+    $zone = $this->Zone->get_zone($this->data['zone_id']);
+    if($zone){
       $this->data['zone'] = $zone;
+      if(!empty($this->data['order_id'])){
+        $this->data['order_details'] = $this->Order->get_order_details($this->input->get('order'));
+        $this->data['order'] = $this->Order->get($this->data['order_id'])[0];
+      }      
 
       $this->bookedTable($zone[0]->e_abb_name);
       $this->existedTable($zone[0]->e_abb_name);
 
       $this->load->library('Layouts');
 
-      $this->data['product_modal'] = $this->layouts->add_page_component('pos/_product_modal');
+      $this->productModal();
 
       $this->layouts->view('pos/order', $this->data, 'pos');
     }
   }
 
+  public function remove()
+  {
+    $order = $this->input->post('order');
+
+    if(empty($order)){
+      redirect('', 'refresh');
+    }
+
+    $this->load->model('Order', '', TRUE);
+    $this->Order->remove($order);
+  }
+
+  public function print_bill()
+  {
+    $order = $this->input->get('order');
+
+    if(empty($order)){
+      redirect('', 'refresh');
+    }
+    $this->load->library('Layouts');
+    
+    $this->load->model('Order', '', TRUE);
+    $this->data['order'] = $this->Order->get($order);
+    $this->data['order_details'] = $this->Order->get_order_details($order);
+    $this->layouts->view('pos/bill', $this->data, 'bill');
+  }
+
   public function add_table()
   {
+    $zone = $this->input->post('zone');
+    $zone_id = $this->input->post('zone_id');
+
+    if(empty($zone) && empty($zone_id)){
+      redirect('', 'refresh');
+    }
+
     $this->load->model('Order', '', TRUE);
-    echo $this->Order->add_table($this->input->post('table'), $this->input->post('zone'), $this->input->post('order'));
+    echo json_encode($this->Order->add_table($this->input->post('table'), $this->input->post('zone'), $this->input->post('order'), $this->input->post('zone_id')));
   }
 
   public function remove_table()
   {
+    $zone = $this->input->post('zone');
+
+    if(empty($zone)){
+      redirect('', 'refresh');
+    }
     $this->load->model('Order', '', TRUE);
     $this->Order->remove_table($this->input->post('table'), $this->input->post('zone'), $this->input->post('order'));
   }
+
 
   public function load()
   {
@@ -100,12 +145,14 @@ class Pos extends CI_Controller {
           $data[$i]['#'] = $i+1;
           $data[$i]['order'] = $item->id;
           $data[$i]['Time'] = date('H:i:s', $item->created_on);
-          $data[$i]['Subtotal'] =  $item->subtotal;
+          $data[$i]['Subtotal'] =  number_format($item->subtotal/100, 2, '.', ',');
           $data[$i]['Qty'] =  $item->qty;
 
           $aTable = $this->getTableArray($item->id);
-          $data[$i]['zone'] = $aTable[0];
-          $data[$i]['Table'] = $aTable[1];
+          $data[$i]['zone'] = $item->zone_id;
+          if($aTable){
+            $data[$i]['Table'] = $aTable;
+          }
      
           $i++;
         }
@@ -124,6 +171,31 @@ class Pos extends CI_Controller {
             $this->data['table_order'][$item->table_number] = 'existed';
         }
       }
+  }
+
+
+  public function add_product()
+  {
+    $product = $this->input->post('product');
+    $zone_id = $this->input->post('zone_id');
+    if(empty($product) && empty($zone_id)){
+      redirect('', 'refresh');
+    }
+
+    $this->load->model('Order', '', TRUE);
+    echo json_encode($this->Order->add_product($this->input->post('product'), $this->input->post('order'), $this->input->post('zone_id'), $this->input->post('qty')));
+  }
+
+  public function remove_product()
+  {
+    $product = $this->input->post('product');
+    $order = $this->input->post('order');
+    if(empty($product) && empty($order)){
+      redirect('', 'refresh');
+    }
+
+    $this->load->model('Order', '', TRUE);
+    $this->Order->remove_product($this->input->post('product'), $this->input->post('order'));
   }
 
   private function bookedTable($section = null)
@@ -152,13 +224,17 @@ class Pos extends CI_Controller {
           $strTable[$i] = $item->section.$item->table_number;
           $i++;
       }
-
-      $zone = $this->Order->get_zone($section);
+      return implode(", ",$strTable);
     }
 
+    return FALSE;
+  }
 
-
-    return array($zone[0]->id, implode(", ",$strTable));
+  private function productModal()
+  {
+    $this->load->model('Product', '', TRUE);
+    $data['product'] = $this->Product->get();
+    $this->data['product_modal'] = $this->layouts->add_page_component('pos/_product_modal', $data);
   }
 }
 

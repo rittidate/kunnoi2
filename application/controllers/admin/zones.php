@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Zone extends CI_Controller {
+class Zones extends CI_Controller {
 
   private $page_data = array();
 
@@ -51,7 +51,7 @@ class Zone extends CI_Controller {
   {
     $data = $this->input->post();
     if($this->Zone->create_zone($data))
-      redirect('admin/zone', 'refresh');
+      redirect('admin/zones', 'refresh');
   }
 
   public function del($action = '', $id = '')
@@ -61,7 +61,7 @@ class Zone extends CI_Controller {
     if($action == 'delete' && !empty($id)){
       $this->Zone->delete_zone($id);
     }
-    redirect('admin/zone', 'refresh'); 
+    redirect('admin/zones', 'refresh'); 
   }
 
   public function update()
@@ -69,7 +69,7 @@ class Zone extends CI_Controller {
     $data = $this->input->post();
       
     if($this->Zone->update_zone($data))
-      redirect('admin/zone', 'refresh'); 
+      redirect('admin/zones', 'refresh'); 
   }
 
   private function page_comoponent()

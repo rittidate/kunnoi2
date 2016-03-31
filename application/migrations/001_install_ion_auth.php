@@ -172,6 +172,7 @@ class Migration_Install_ion_auth extends CI_Migration {
 			'last_name' => 'istrator',
 			'company' => 'ADMIN',
 			'phone' => '0',
+			'group_id' => '1',
 		);
 		$this->db->insert('users', $data);
 

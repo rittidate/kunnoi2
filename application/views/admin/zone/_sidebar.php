@@ -11,7 +11,7 @@
     </div>
     <div class="box-body no-padding">
       <ul class="nav nav-pills nav-stacked">
-        <li class="<?= ($page == 'zone') ? 'active' : '' ?>"><a href="/admin/zone"><i class="fa fa-inbox"></i> Zone</a></li>
+        <li class="<?= ($page == 'zone') ? 'active' : '' ?>"><a href="/admin/zones"><i class="fa fa-inbox"></i> Zone</a></li>
         <li class="<?= ($page == 'a') ? 'active' : '' ?>"><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
         <li class="<?= ($page == 'b') ? 'active' : '' ?>"><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
         <li class="<?= ($page == 'c') ? 'active' : '' ?>"><a href="#"><i class="fa fa-filter"></i> Junk <span class="label label-warning pull-right">65</span></a>

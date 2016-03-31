@@ -33,7 +33,7 @@
                 - endfor
             .row
               .product-selection{:class => 'col-md-12'}
-                %button{:class => 'btn btn-primary js-product-selection col-md-12', :data-toggle => 'modal', :data-target => '#myModal'} เลือกสินค้า
+                %button{:class => 'btn btn-primary js-product-selection col-md-12', :data-toggle => 'modal', :data-target => '#productModal'} เลือกสินค้า
 
           %table{:class => 'table'}
             %tr
@@ -47,39 +47,71 @@
                 รวม
           .panel-body{:id => 'order-list'}
             .row
-              %table{:class => 'table table-striped'}
-                - for ($i=1; $i < 60;):
-                  %tr
-                    %td #{$i}
-                    %td{:class => 'col-md-6'} Soup
-                    %td{:class => 'col-md-3'}
-                      %input{:type =>'number', :class => 'col-md-12'}
-                    %td{:class => 'col-md-2'} 1000
-                  - $i++
-                - endfor
+              %table{:class => 'table table-striped js-order-detail-table'}
+                - if(!empty($order_details)):
+                  - $i = 1
+                  - foreach ($order_details as $item):
+                    %tr{:class => 'js-order-detail-row', :data-id => '#{$item->mp_id}'}
+                      %td #{$i}
+                      %td{:class => 'col-md-1'}
+                        %button{:class => 'btn btn-danger js-order-detail-remove', :data-id => '#{$item->mp_id}'}
+                          %i{:class => 'fa fa-close'}
+                      %td{:class => 'col-md-5'} 
+                        %span{:class => 'js-order-detail-name', :data-id => '#{$item->mp_id}'}
+                          = $item->t_full_name
+                      %td{:class => 'col-md-3'}
+                        %input{:type =>'number', :class => 'col-md-12 js-order-detail-qty', :data-id => '#{$item->mp_id}', :value => '#{$item->qty}'}
+                      %td{:class => 'col-md-2'} 
+                        %span{:class => 'js-order-detail-total', :data-id => '#{$item->mp_id}'}
+                          = number_format($item->total/100, 2, '.', ',')
+                    - $i++
+                  - endforeach
+                - endif
 
           .panel-footer
             %span{:class => 'col-md-4'} Total
             .input-group{:class => 'col-md-8'}
               %span{:class => 'input-group-addon'} ฿
-              %input{:type => text, :class => 'form-control'}
+              %input{:type => 'text', :class => 'form-control',:id => 'js-subtotal', :readonly => '', :value => '#{!empty($order) ? number_format($order->subtotal/100, 0, ".", ",") : 0}' } 
               %span{:class => 'input-group-addon'} .00
 
         #pos-btn-panel
           %button{:class => 'btn btn-success col-md-5'} 
             %i{:class => 'fa fa-money'} 
             %span รับเงิน
-          %button{:class => 'btn btn-info col-md-5 col-md-offset-2'} 
+          %button{:class => 'btn btn-info col-md-5 col-md-offset-2 js-print'} 
             %i{:class => 'fa fa-print'}
             %span Print
           %a{:href => '/pos'}
             %button{:class => 'btn btn-default col-md-5'} 
               %i{:class => 'fa fa-reply'}
               %span Back
-          %button{:class => 'btn btn-danger col-md-5 col-md-offset-2'}
+          %button{:class => 'btn btn-danger col-md-5 col-md-offset-2',:data-toggle => "modal", :data-target =>"#confirm-delete-order"}
             %i{:class => 'fa fa-trash'}
             %span ลบ
+#confirm-delete-order-details{:class => 'modal fade delete-modal', :tabindex => '-1', :role => 'dialog', :aria-hidden => 'true', :data-id => '', :data-product => ''}
+  .modal-dialog
+    .modal-content
+      .modal-body
+        %strong 
+          %i{:class => 'fa fa-trash'} 
+          Do you want to delete this goods?
+        .button-box
+          %a{:class => 'btn btn-danger confirm-delete-order-details'} Delete
+          %button{:type => 'button', :class => 'btn btn-default', :data-dismiss => 'modal'} Cancel
+#confirm-delete-order{:class => 'modal fade delete-modal', :tabindex => '-1', :role => 'dialog', :aria-hidden => 'true', :data-id => ''}
+  .modal-dialog
+    .modal-content
+      .modal-body
+        %strong 
+          %i{:class => 'fa fa-trash'} 
+          Do you want to delete this order?
+        .button-box
+          %a{:class => 'btn btn-danger confirm-delete-order'} Delete
+          %button{:type => 'button', :class => 'btn btn-default', :data-dismiss => 'modal'} Cancel
+          
 = $product_modal
+
 :javascript
   var fullScreenPanel = $(window).height() - 100;
   var fullScreenOrderList = $(window).height() - 360;
@@ -91,6 +123,7 @@
     var tableNumber = $(this).data('table');
     var tableZone = $(this).data('zone');
     var order = $('#order_id').val();
+    var zone_id = $('#zone_id').val();
     var base = this;
 
     if($(this).hasClass('btn-info')){  
@@ -99,7 +132,8 @@
         url: "/pos/add_table",
         data: { table: tableNumber,
                 zone:  tableZone,
-                order: order},
+                order: order,
+                zone_id: zone_id},
         datatype: "json",
         success: function(data){
             obj = JSON.parse(data);
@@ -127,9 +161,26 @@
             removeTableLabel(tableNumber);
         }
       });
-
     }
-    
+  });
+
+  $('.confirm-delete-order').click(function(){
+      var order = $('#order_id').val();
+      $.ajax({
+        method: "POST",
+        url: "/pos/remove",
+        data: { 
+                order: order
+              },
+        success: function(){
+          window.location.replace('/pos');
+        }
+      });
+  });
+
+  $('.js-print').click(function(){
+      var order = $('#order_id').val();
+      window.open('/pos/print_bill/?order='+order, "popupWindow", "width=300,height=600,scrollbars=yes");
   });
 
   function addTableLabel(number) {

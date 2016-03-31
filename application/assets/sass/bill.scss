@@ -1,0 +1,21 @@
+body{
+  width: 300px;
+  margin: 0;
+
+  h3{
+    text-align: center;
+  }
+
+  table {
+
+    width: 270px;
+    padding: 10px 0;
+    margin: 0px 10px;
+
+    tr td:last-child, tr th:last-child{
+      text-align: right;
+    }
+  }
+}
+
+

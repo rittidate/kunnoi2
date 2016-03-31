@@ -1,0 +1,60 @@
+#print
+  %h3 คุณน้อยหมูกระทะ
+  %table
+    %tr
+      %th บิลเลขที่
+      %td #{$order[0]->id}
+    %tr
+      %th วันที่
+      %td #{date('d-m-Y',$order[0]->created_on)}
+    %tr
+      %th เวลา
+      %td #{date('H:i:s',$order[0]->created_on)}
+  %hr
+  %table
+    %tbody
+      %tr
+        %th #
+        %th รายการ
+        %th Qty
+        %th ราคา
+        %th รวม
+        - $i = 1
+      - foreach($order_details as $item):
+        %tr
+          %td =$i
+          %td #{$item->t_abb_name}
+          %td #{$item->qty}
+          %td #{number_format($item->price/100,2)}
+          %td #{number_format($item->total/100,2)}
+        - $i++
+      - endforeach
+  %hr
+  %table
+    %tbody
+      %tr
+        %th รวมทั้งหมด
+        %th #{number_format($order[0]->subtotal/100,2)}
+:javascript
+  $("#print").print({
+      globalStyles: true,
+      mediaPrint: false,
+      stylesheet: null,
+      noPrintSelector: ".no-print",
+      iframe: true,
+      append: null,
+      prepend: null,
+      manuallyCopyFormValues: true,
+      deferred: $.Deferred(),
+      timeout: 250,
+          title: null,
+          doctype: '<!doctype html>'
+  });
+
+  var delay=3000; //1 second
+
+  setTimeout(function() {
+    window.close();
+  }, delay);
+
+  
