@@ -32,7 +32,7 @@
     <ul class="sidebar-menu">
       <li class="header">HEADER</li>
       <!-- Optionally, you can add icons to the links -->
-      <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+      <li><a href="/admin/users"><i class="fa fa-users"></i> <span>Users</span></a></li>
       <li>
         <a href="/admin/zones">
           <i class="fa fa-cog"></i> 

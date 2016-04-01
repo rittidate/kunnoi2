@@ -419,33 +419,64 @@ class Ion_auth_model extends CI_Model
 	{
 	    if (empty($identity))
 	    {
-		return FALSE;
+				return FALSE;
 	    }
 
 	    $this->db->select(array(
 				$this->tables['users'].'.*',
 				$this->tables['groups'].'.name AS '. $this->db->protect_identifiers('group'),
 				$this->tables['groups'].'.description AS '. $this->db->protect_identifiers('group_description')
-				   ));
+		   ));
 
-	    if (!empty($this->columns))
-	    {
-		foreach ($this->columns as $field)
-		{
-		    $this->db->select($this->tables['meta'] .'.' . $field);
-		}
-	    }
 
-	    $this->db->join($this->tables['meta'], $this->tables['users'].'.id = '.$this->tables['meta'].'.'.$this->meta_join, 'left');
 	    $this->db->join($this->tables['groups'], $this->tables['users'].'.group_id = '.$this->tables['groups'].'.id', 'left');
 
 	    if ($is_code)
 	    {
-		$this->db->where($this->tables['users'].'.forgotten_password_code', $identity);
+				$this->db->where($this->tables['users'].'.forgotten_password_code', $identity);
 	    }
 	    else
 	    {
-		$this->db->where($this->tables['users'].'.'.$this->identity_column, $identity);
+				$this->db->where($this->tables['users'].'.'.$this->identity_column, $identity);
+	    }
+
+	    $this->db->where($this->ion_auth->_extra_where);
+
+	    $this->db->limit(1);
+	    $i = $this->db->get($this->tables['users']);
+
+	    return ($i->num_rows > 0) ? $i->row() : FALSE;
+	}
+
+	/**
+	 * profile
+	 *
+	 * @return void
+	 * @author Mathew
+	 **/
+	public function user_profile($identity = '', $is_code = false)
+	{
+	    if (empty($identity))
+	    {
+				return FALSE;
+	    }
+
+	    $this->db->select(array(
+				$this->tables['users'].'.*',
+				$this->tables['groups'].'.name AS '. $this->db->protect_identifiers('group'),
+				$this->tables['groups'].'.description AS '. $this->db->protect_identifiers('group_description')
+		   ));
+
+
+	    $this->db->join($this->tables['groups'], $this->tables['users'].'.group_id = '.$this->tables['groups'].'.id', 'left');
+
+	    if ($is_code)
+	    {
+				$this->db->where($this->tables['users'].'.forgotten_password_code', $identity);
+	    }
+	    else
+	    {
+				$this->db->where($this->tables['users'].'.id', $identity);
 	    }
 
 	    $this->db->where($this->ion_auth->_extra_where);

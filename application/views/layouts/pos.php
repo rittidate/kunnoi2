@@ -8,12 +8,13 @@
 
     <?= css_asset('normalize.css', 'bukku'); ?>
     <?= css_asset('bootstrap.min.css', 'bootstrap'); ?>
-    <?= css_asset('sass/pos.css'); ?>
-
+    
     <?= css_asset('demos.css', 'jsgrid'); ?>
     <?= css_asset('jsgrid.css', 'jsgrid'); ?>
     <?= css_asset('theme.css', 'jsgrid'); ?>
 
+    <?= css_asset('sass/pos.css'); ?>
+    <?= css_asset('sass/calculator.css'); ?>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 

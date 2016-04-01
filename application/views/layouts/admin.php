@@ -18,18 +18,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <?= css_asset('AdminLTE.min.css', 'admin'); ?>
-  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-        page. However, you can choose any other skin. Make sure you
-        apply the skin class to the body tag so the changes take effect.
-  -->
   <?= css_asset('skins/skin-blue.min.css', 'admin'); ?>
-
+  <?= css_asset('sass/users.css'); ?>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+  <!-- ./wrapper -->
+
+  <!-- REQUIRED JS SCRIPTS -->
+
+  <!-- jQuery 2.2.0 -->
+  <?= js_asset('jQuery-2.2.0.min.js', 'admin'); ?>
+  <!-- Bootstrap 3.3.5 -->
+  <?= js_asset('bootstrap.min.js', 'bootstrap'); ?> 
+  <!-- AdminLTE App -->
+  <?= js_asset('app.min.js', 'admin'); ?>
+
+  <?= js_asset('jquery.validate.js', 'validator'); ?>
+  <script>
+    $('#confirm-delete').on('show.bs.modal', function(e) {
+      $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+    });
+  </script>
+  <!-- Optionally, you can add Slimscroll and FastClick plugins.
+       Both of these plugins are recommended to enhance the
+       user experience. Slimscroll is required when using the
+       fixed layout. -->
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -309,25 +326,6 @@ desired effect
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
-<!-- ./wrapper -->
 
-<!-- REQUIRED JS SCRIPTS -->
-
-<!-- jQuery 2.2.0 -->
-<?= js_asset('jQuery-2.2.0.min.js', 'admin'); ?>
-<!-- Bootstrap 3.3.5 -->
-<?= js_asset('bootstrap.min.js', 'bootstrap'); ?> 
-<!-- AdminLTE App -->
-<?= js_asset('app.min.js', 'admin'); ?>
-
-<script>
-  $('#confirm-delete').on('show.bs.modal', function(e) {
-    $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-  });
-</script>
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. Slimscroll is required when using the
-     fixed layout. -->
 </body>
 </html>

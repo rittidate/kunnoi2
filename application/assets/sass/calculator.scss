@@ -1,0 +1,26 @@
+.js-input-close-bill{
+  font-size: 2em;
+  input[type='number'] {
+      -moz-appearance:textfield;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+
+  .form-group{
+    margin: 40px 0;
+  }
+
+
+}
+
+
+.js-panel-close-bill{
+  .btn{
+    font-size: 3em;
+    height: 70px;
+  }
+}

@@ -464,6 +464,20 @@ class Ion_auth
 	}
 
 	/**
+	 * User Profile
+	 *
+	 * @return void
+	 * @author Mathew
+	 **/
+	public function user_profile($id = '')
+	{
+		$identity = $id;
+
+		return $this->ci->ion_auth_model->user_profile($identity);
+	}
+
+
+	/**
 	 * Get Users
 	 *
 	 * @return object Users

@@ -1,0 +1,55 @@
+.content-wrapper
+  %section{:class => 'content-header'}
+    %h1 
+      %i{:class => 'fa fa-wrench'}
+      %span User
+      %small List
+    %ol{:class => 'breadcrumb'}
+      %li
+        %i{:class => 'fa fa-cog'}
+        %span User
+      %li{:class => 'active'} List
+  %section{:class => 'content'}
+    .row
+      .col-xs-12
+        .box
+          .box-header
+            %h3{:class =>'box-title'} User List
+            .box-tools
+              %a{:type =>'button', :class => 'btn btn-success pull-right', :href => 'users/edit/?action=new'}
+                %i{:class => 'fa fa-plus'}  
+                %span Add
+          .box-body{:class => 'table-responsive no-padding'}
+            %table{:class => 'table table-hover'}
+              %tr
+                %th #
+                %th First Name
+                %th Last Name
+                %th Phone Number
+                %th Setting
+              - $i = 1
+              - foreach ($users as $item):
+                %tr
+                  %td #{$i}
+                  %td #{$item['first_name']}
+                  %td #{$item['last_name']}
+                  %td #{$item['phone']}
+                  %td
+                    .box-tools
+                      %a{:href => "users/edit/?action=edit&id=#{$item['id']}", :type =>'button', :class => 'btn btn-warning'}
+                        %i{:class => 'fa fa-wrench'} 
+                      %a{:href => '#', :data-href => "users/del/?action=delete&id=#{$item['id']}", :type =>'button', :class => 'btn btn-danger',:data-toggle => "modal", :data-target =>"#confirm-delete"}
+                        %i{:class => 'fa fa-trash'} 
+                - $i++
+              - endforeach
+  #confirm-delete{:class => 'modal fade', :tabindex => '-1', :role => 'dialog', :aria-hidden => 'true'}
+    .modal-dialog
+      .modal-content
+        .modal-body
+          %strong 
+            %i{:class => 'fa fa-trash'} 
+            Do you want to delete?
+        .modal-footer
+          %button{:type => 'button', :class => 'btn btn-default', :data-dismiss => 'modal'} Cancel
+          %a{:class => 'btn btn-danger btn-ok'} Delete
+

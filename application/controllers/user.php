@@ -49,7 +49,7 @@ class User extends CI_Controller {
     }
 
     //validate form input
-    $this->form_validation->set_rules('email', 'Email Address', 'required|valid_email');
+    //$this->form_validation->set_rules('email', 'Email Address', 'required|valid_email');
     $this->form_validation->set_rules('password', 'Password', 'required');
 
     if ($this->form_validation->run() == true)
@@ -80,9 +80,9 @@ class User extends CI_Controller {
       $this->data['email'] = array('name' => 'email',
         'id' => 'email',
         'class' => 'form-control',
-        'placeholder' => 'Email address',
+        'placeholder' => 'Username',
         'required' => '',
-        'type' => 'email',
+        'type' => 'text',
         'value' => $this->form_validation->set_value('email'),
       );
 

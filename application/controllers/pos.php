@@ -94,6 +94,19 @@ class Pos extends CI_Controller {
     $this->Order->remove($order);
   }
 
+  public function summary()
+  {
+    $order = $this->input->post('order');
+    $amount = $this->input->post('amount');
+
+    if(empty($order)){
+      redirect('', 'refresh');
+    }
+
+    $this->load->model('Order', '', TRUE);
+    echo json_encode($this->Order->summary($order, $amount));
+  }
+
   public function print_bill()
   {
     $order = $this->input->get('order');
@@ -102,13 +115,28 @@ class Pos extends CI_Controller {
       redirect('', 'refresh');
     }
     $this->load->library('Layouts');
-    
+
     $this->load->model('Order', '', TRUE);
     $this->data['order'] = $this->Order->get($order);
     $this->data['order_details'] = $this->Order->get_order_details($order);
     $this->layouts->view('pos/bill', $this->data, 'bill');
   }
 
+  public function print_summary()
+  {
+    $order = $this->input->get('order');
+
+    if(empty($order)){
+      redirect('', 'refresh');
+    }
+    $this->load->library('Layouts');
+
+    $this->load->model('Order', '', TRUE);
+    $this->data['order'] = $this->Order->get_close($order);
+    $this->data['order_details'] = $this->Order->get_order_details($order);
+    $this->data['order_payment'] = $this->Order->get_order_payment($order);
+    $this->layouts->view('pos/bill', $this->data, 'bill');
+  }
   public function add_table()
   {
     $zone = $this->input->post('zone');
@@ -195,7 +223,7 @@ class Pos extends CI_Controller {
     }
 
     $this->load->model('Order', '', TRUE);
-    $this->Order->remove_product($this->input->post('product'), $this->input->post('order'));
+    echo json_encode($this->Order->remove_product($this->input->post('product'), $this->input->post('order')));
   }
 
   private function bookedTable($section = null)
@@ -235,6 +263,8 @@ class Pos extends CI_Controller {
     $this->load->model('Product', '', TRUE);
     $data['product'] = $this->Product->get();
     $this->data['product_modal'] = $this->layouts->add_page_component('pos/_product_modal', $data);
+    $this->data['delete_modal'] = $this->layouts->add_page_component('pos/_delete_modal');
+    $this->data['close_bill_modal'] = $this->layouts->add_page_component('pos/_close_bill_modal', $this->data);
   }
 }
 

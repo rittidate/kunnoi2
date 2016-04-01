@@ -31,6 +31,25 @@ class Order extends CI_Model
     return ($q->num_rows > 0) ? $q->result() : FALSE;
   }
 
+  public function get_close($id = '')
+  {
+    $data = array(
+              'status' => 'C',
+              'date' => date('Y-m-d'),
+              'year' => date('Y')
+              );
+
+    if(!empty($id)){
+      $data['id'] =  $id;
+    }
+    
+    $this->db->where($data);
+
+    $q = $this->db->get('pos_orders');
+
+    return ($q->num_rows > 0) ? $q->result() : FALSE;
+  }
+
   public function create()
   {
       $data['type'] = 'S';
@@ -83,6 +102,40 @@ class Order extends CI_Model
     }
   }
 
+  public function summary($order_id = '', $amount = '')
+  {
+    if(!empty($order_id)){
+      
+      $q = $this->get_order_payment($order_id);
+
+      if(!$q){
+        $order = $this->get($order_id);
+
+        $pay_amount = $amount*100;
+
+        $cash_tender = $amount*100 - $order[0]->subtotal;
+
+        $data = array(
+                  'order_id' => $order_id,
+                  'payment_type' => '61',
+                  'pay_amount' => $pay_amount,
+                  'cash_tender' => $cash_tender,
+                  'date' => date('Y-m-d')
+                );
+        $this->db->insert('pos_order_payments', $data);
+
+        $order_data['status'] = 'C';
+        $order_data['updated_on'] = time();
+        $this->db->where('id', $order_id);
+        $this->db->update('pos_orders', $order_data);
+
+        return $data;
+      }
+      return FALSE;
+    }
+    return FALSE;
+  }
+
   public function get_order_details($order_id = '')
   {
     if(!empty($order_id)){
@@ -95,6 +148,20 @@ class Order extends CI_Model
       $this->db->from('mp_products');
       $this->db->join('pos_order_details', 'mp_products.id = pos_order_details.mp_id');
       $q = $this->db->get();
+
+      return ($q->num_rows > 0) ? $q->result() : FALSE;
+    }
+    return FALSE;
+  }
+
+  public function get_order_payment($order_id = '')
+  {
+    if(!empty($order_id)){
+      $data = array(
+                'order_id' => $order_id,
+                );
+      $this->db->where($data);
+      $q = $this->db->get('pos_order_payments');
 
       return ($q->num_rows > 0) ? $q->result() : FALSE;
     }
@@ -243,8 +310,11 @@ class Order extends CI_Model
         $this->db->set('updated_on', time());
         $this->db->where('id', $rowPd->id);
         $this->db->update('pos_order_details');
-        $this->update($order);
+        $return['subtotal'] = $this->update($order);
+
+        return $return;
       }
+      return FALSE;
   }
 
   public function get_order_table($id = null, $section = null)

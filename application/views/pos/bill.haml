@@ -1,5 +1,5 @@
 #print
-  %h3 คุณน้อยหมูกระทะ
+  %h3 บางบ่อ บุฟเฟ่ต์
   %table
     %tr
       %th บิลเลขที่
@@ -35,6 +35,14 @@
       %tr
         %th รวมทั้งหมด
         %th #{number_format($order[0]->subtotal/100,2)}
+      - if(!empty($order_payment)):
+        %tr
+          %th รับเงิน
+          %th #{number_format($order_payment[0]->pay_amount/100,2)}
+        %tr
+          %th เงินทอน
+          %th #{number_format($order_payment[0]->cash_tender/100,2)}
+      - endif
 :javascript
   $("#print").print({
       globalStyles: true,
@@ -51,7 +59,7 @@
           doctype: '<!doctype html>'
   });
 
-  var delay=3000; //1 second
+  var delay=3000; //3 second
 
   setTimeout(function() {
     window.close();

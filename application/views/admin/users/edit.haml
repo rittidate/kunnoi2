@@ -1,0 +1,68 @@
+.content-wrapper
+  %section{:class => 'content-header'}
+    %h1 
+      %i{:class => 'fa fa-users'}
+      %span User
+      %small Setting
+    %ol{:class => 'breadcrumb'}
+      %li
+        %i{:class => 'fa fa-cog'}
+        %span Setting
+      %li User
+      %li =$action
+  %section{:class => 'content'}
+    .row
+      .col-xs-12
+        .box.box-info
+          .box-header.with-border
+            %h3{:class => 'box-title'} =$action
+              %span User
+          %form{:class => 'form-horizontal', :id => '#{$action == "new" ? "user-new-form" : "user-edit-form"}', :method => 'post', :action => '/admin/users/#{$action == "new" ? "create" : "update"}'}
+            %input{:type => 'hidden', :value => '#{!empty($id) ? $id : ""}', :id => 'id', :name => 'id'}
+            .box-body
+              .form-group
+                %lable{:for => 'abb_zone', :class => 'col-sm-4 control-label'} Username
+                .col-sm-6
+                  = form_input($username)
+              .form-group
+                %lable{:for => 'abb_zone', :class => 'col-sm-4 control-label'} First Name
+                .col-sm-6
+                  = form_input($first_name)
+              .form-group
+                %lable{:for => 'full_zone', :class => 'col-sm-4 control-label'} Last Name
+                .col-sm-6
+                  = form_input($last_name)
+              .form-group
+                %lable{:for => 'value1', :class => 'col-sm-4 control-label'} Company Name
+                .col-sm-6
+                  = form_input($company)
+              .form-group
+                %lable{:for => 'value1', :class => 'col-sm-4 control-label'} Email
+                .col-sm-6
+                  = form_input($email)
+              .form-group
+                %lable{:for => 'value1', :class => 'col-sm-4 control-label'} Phone
+                .col-sm-6
+                  = form_input($phone)
+              .form-group
+                %lable{:for => 'value1', :class => 'col-sm-4 control-label'} User Group
+                .col-sm-6
+                  %select{:class => 'form-control', :name => 'group', :id => 'group'}
+                    %option{:value => '2'} Cashier
+                    %option{:value => '1'} Admin
+              - if($action == 'new'):
+                .form-group
+                  %lable{:for => 'value1', :class => 'col-sm-4 control-label'} Password
+                  .col-sm-6
+                    = form_input($password)
+                .form-group
+                  %lable{:for => 'value1', :class => 'col-sm-4 control-label'} Confirm Password
+                  .col-sm-6
+                    = form_input($password_confirm)
+              - endif
+            .box-footer
+              %a{:href => '/admin/users', :class => 'btn btn-default'}
+                %i{:class => 'fa fa-back'}
+                %span Back
+              %button{:type => 'submit', class => 'btn btn-info pull-right'} Submit
+= js_asset('users.js')
