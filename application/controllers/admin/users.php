@@ -74,7 +74,6 @@ class Users extends CI_Controller {
         redirect('admin/users', 'refresh');
         break;
     }
-
     $this->page_data['username'] = array('name' => 'username',
       'id' => 'username',
       'type' => 'text',
@@ -122,6 +121,14 @@ class Users extends CI_Controller {
       'required' => 'number',
       'value' => !empty($profile) ? $profile->phone : '',
     );
+
+    $options = array(
+                      '2'  => 'Cashier',
+                      '1'    => 'Admin',
+                    );
+
+    $this->page_data['group'] = form_dropdown('group', $options, !empty($profile) ? $profile->group_id : '', 'class="form-control" id="group"');
+
     $this->page_data['password'] = array('name' => 'password',
       'id' => 'password',
       'type' => 'password',

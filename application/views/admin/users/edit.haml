@@ -47,9 +47,7 @@
               .form-group
                 %lable{:for => 'value1', :class => 'col-sm-4 control-label'} User Group
                 .col-sm-6
-                  %select{:class => 'form-control', :name => 'group', :id => 'group'}
-                    %option{:value => '2'} Cashier
-                    %option{:value => '1'} Admin
+                  = $group
               - if($action == 'new'):
                 .form-group
                   %lable{:for => 'value1', :class => 'col-sm-4 control-label'} Password
