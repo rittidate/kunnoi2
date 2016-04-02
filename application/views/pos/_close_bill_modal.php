@@ -16,7 +16,7 @@
             <div class="form-group">
               <label class="control-label col-sm-4" for="amount">รับเงิน</label>
               <div class="col-sm-7">
-                <input type="number" class="form-control input-lg" id="js-close-bill-amount" placeholder="Press Number">
+                <input type="number" class="form-control input-lg" id="js-close-bill-amount" pattern="^\d+(\.|\,)\d{2}$" placeholder="Press Number">
               </div>
             </div>
           </div>
@@ -61,49 +61,3 @@
     </div>
   </div>
 </div>
-<script>
-  var fullScreenModalWidth = $(window).width() - 400;
-  var fullScreenModalHeight= 290;
-
-  $('#closeBillModal .modal-dialog').width(fullScreenModalWidth);
-  $('#closeBillModal .modal-body').height(fullScreenModalHeight).css('overflow' , 'auto');
-
-  $('.js-button-number').click(function(){
-      var input = $(this).data('input');
-      var number = $("#js-close-bill-amount").val();
-      var subtotal = $("#js-close-bill-subtotal").val();
-
-      if(input == 'enter'){
-        if(Number(subtotal) <= Number(number)){
-            $.ajax({
-              method: "POST",
-              url: "/pos/summary",
-              data: { 
-                      amount: number,
-                      order: $("#order_id").val()
-                    },
-              datatype: "json",
-              success: function(data){
-                obj = JSON.parse(data);
-                $("#js-close-bill-change").val(obj.cash_tender/100);
-
-                window.open('/pos/print_summary/?order='+obj.order_id, "popupWindow", "width=300,height=600,scrollbars=yes");
-
-                var delay=4000; //3 second
-
-                setTimeout(function() {
-                  window.location.replace('/pos');
-                }, delay);
-              }
-            });
-        }
-      }else if(input == 'del'){
-        var delNumber = number.slice(0, number.length-1);
-        $("#js-close-bill-amount").val(delNumber);
-      }else{
-        var lastNumber = number + input;
-        $("#js-close-bill-amount").val(lastNumber);
-      }
-  });
-
-</script>

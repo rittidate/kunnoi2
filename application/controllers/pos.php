@@ -119,6 +119,7 @@ class Pos extends CI_Controller {
     $this->load->model('Order', '', TRUE);
     $this->data['order'] = $this->Order->get($order);
     $this->data['order_details'] = $this->Order->get_order_details($order);
+    $this->data['table']= $this->getTableArray($order);
     $this->layouts->view('pos/bill', $this->data, 'bill');
   }
 
@@ -135,6 +136,7 @@ class Pos extends CI_Controller {
     $this->data['order'] = $this->Order->get_close($order);
     $this->data['order_details'] = $this->Order->get_order_details($order);
     $this->data['order_payment'] = $this->Order->get_order_payment($order);
+    $this->data['table']= $this->getTableArray($order);
     $this->layouts->view('pos/bill', $this->data, 'bill');
   }
   public function add_table()

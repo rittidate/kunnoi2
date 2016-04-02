@@ -23,4 +23,3 @@
   </div>
 </div>
 
-<?= js_asset('pos_modal.js'); ?>
