@@ -168,23 +168,26 @@ class Pos extends CI_Controller {
   {
     $data = array();
     $this->load->model('Order', '', TRUE);
-    $orders = $this->Order->get();
+    $orderByTable = TRUE;
+    $orders = $this->Order->get('', $orderByTable);
     if($orders){
         $i = 0;
         foreach ($orders as $item) {
-          $data[$i]['#'] = $i+1;
-          $data[$i]['order'] = $item->id;
-          $data[$i]['Time'] = date('H:i:s', $item->created_on);
-          $data[$i]['Subtotal'] =  number_format($item->subtotal/100, 2, '.', ',');
-          $data[$i]['Qty'] =  $item->qty;
-
           $aTable = $this->getTableArray($item->id);
-          $data[$i]['zone'] = $item->zone_id;
-          if($aTable){
-            $data[$i]['Table'] = $aTable;
+          if($this->checkIteratedTable($data, $aTable)){
+            $data[$i]['#'] = $i+1;
+            $data[$i]['order'] = $item->id;
+            $data[$i]['Time'] = date('H:i:s', $item->created_on);
+            $data[$i]['Subtotal'] =  number_format($item->subtotal/100, 2, '.', ',');
+            $data[$i]['Qty'] =  $item->qty;
+
+            $data[$i]['zone'] = $item->zone_id;
+            if($aTable){
+              $data[$i]['Table'] = $aTable;
+            }
+       
+            $i++;
           }
-     
-          $i++;
         }
     }
 
@@ -201,6 +204,15 @@ class Pos extends CI_Controller {
             $this->data['table_order'][$item->table_number] = 'existed';
         }
       }
+  }
+
+  private function checkIteratedTable($data, $tables)
+  {
+    foreach($data as $item){
+      if(!empty($item['Table']) && $item['Table'] == $tables)
+        return FALSE;
+    }
+    return TRUE;
   }
 
 

@@ -835,7 +835,7 @@ class Migration_Add_product extends CI_Migration {
           array (
           'price1' => '2000',
           'barcode' => 'pd000041',
-          'mp_id' => '41',
+          'mp_id' => '40',
           'unit_id' => '13',
           'created_on' => time(),
           'updated_on' => time(),
@@ -843,7 +843,7 @@ class Migration_Add_product extends CI_Migration {
           array (
           'price1' => '500',
           'barcode' => 'pd000042',
-          'mp_id' => '42',
+          'mp_id' => '41',
           'unit_id' => '13',
           'created_on' => time(),
           'updated_on' => time(),
@@ -851,7 +851,7 @@ class Migration_Add_product extends CI_Migration {
           array (
           'price1' => '8500',
           'barcode' => 'pd000043',
-          'mp_id' => '43',
+          'mp_id' => '42',
           'unit_id' => '13',
           'created_on' => time(),
           'updated_on' => time(),
@@ -859,7 +859,7 @@ class Migration_Add_product extends CI_Migration {
           array (
           'price1' => '149000',
           'barcode' => 'pd000044',
-          'mp_id' => '44',
+          'mp_id' => '43',
           'unit_id' => '13',
           'created_on' => time(),
           'updated_on' => time(),

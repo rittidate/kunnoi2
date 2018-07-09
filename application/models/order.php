@@ -12,7 +12,7 @@ class Order extends CI_Model
     parent::__construct();
   }
 
-  public function get($id = '')
+  public function get($id = '', $orderByTable = FALSE)
   {
     $data = array(
               'status' => 'O',
@@ -22,6 +22,13 @@ class Order extends CI_Model
 
     if(!empty($id)){
       $data['id'] =  $id;
+    }
+
+    if($orderByTable)
+    {
+      $this->db->join('pos_order_tables', 'pos_order_tables.order_id = pos_orders.id', 'left'); 
+      $this->db->order_by('pos_order_tables.section', 'asc');
+      $this->db->order_by('pos_order_tables.table_number', 'asc');
     }
     
     $this->db->where($data);
